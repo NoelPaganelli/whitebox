@@ -2,15 +2,21 @@
 
   constructor() {
     super();
+    this.handleClickApp = this.handleClickApp.bind(this);
+  }
+ 
+  handleClickApp(position) {
+    console.log(position);
   }
 
+  
   render() {
     return (
       <div>
         <Header />
         <section id="home" className="padbot0">
           <Slider />
-          <Carousel/>
+          <Carousel fonctionClick={this.handleClickApp}/>
         </section>
       </div>
     )
@@ -46,12 +52,26 @@ class Slider extends React.Component {
   }
   
   render() {
+    
+      var selected1 = false;
+      if(this.props.index == 1) {
+        selected1 = true;
+      }
+      var selected2 = false;
+      if(this.props.index == 2) {
+        selected2 = true;
+      }  
+      var selected3 = false;
+      if(this.props.index == 3) {
+        selected3 = true;
+      }
+     
      return (
        <div className="flexslider top_slider">
         <ul className="slides">
-          <SliderImage selectedImage={true} slideName="slide1" location="Lyon" title="vacances été" year="2017" desc="Vacance au calme dans une petite maison de campagne"/>
-          <SliderImage selectedImage={false} slideName="slide2" location="Bretagne" title="weekend de mai" year="2016" desc="Un moment de detente en famille"/>
-          <SliderImage selectedImage={false} slideName="slide3" location="Biarritz" title="Anniversaire de Théo" year="2017" desc="Surf and fun entre amis"/>
+          <SliderImage selectedImage={selected1} slideName="slide1" location="Lyon" title="vacances été" year="2017" desc="Vacance au calme dans une petite maison de campagne"/>
+          <SliderImage selectedImage={selected2} slideName="slide2" location="Bretagne" title="weekend de mai" year="2016" desc="Un moment de detente en famille"/>
+          <SliderImage selectedImage={selected3} slideName="slide3" location="Biarritz" title="Anniversaire de Théo" year="2017" desc="Surf and fun entre amis"/>
         </ul>
 			</div>
      
@@ -99,9 +119,9 @@ class Carousel extends React.Component {
     return(
       <div id="carousel">
         <ul className="slides">
-          <CarouselImage selectedImage="true" imageUrl="images/slider/slide1_bg.jpg"/>
-          <CarouselImage imageUrl="images/slider/slide2_bg.jpg"/>
-          <CarouselImage imageUrl="images/slider/slide3_bg.jpg"/>
+          <CarouselImage position="1" fonctionClick={this.props.fonctionClick} selectedImage="true" imageUrl="images/slider/slide1_bg.jpg"/>
+          <CarouselImage position="2" fonctionClick={this.props.fonctionClick} imageUrl="images/slider/slide2_bg.jpg"/>
+          <CarouselImage position="3" fonctionClick={this.props.fonctionClick} imageUrl="images/slider/slide3_bg.jpg"/>
         </ul>
       </div>
     )
@@ -113,6 +133,12 @@ class Carousel extends React.Component {
 class CarouselImage extends React.Component {
   constructor() {
     super();
+    this.handleClickCarouselImage = this.handleClickCarouselImage.bind(this);
+  }
+  
+  handleClickCarouselImage() {
+    console.log('je suis dans CarouselImage');
+    this.props.fonctionClick(this.props.position);
   }
   
   render() {
@@ -122,7 +148,7 @@ class CarouselImage extends React.Component {
       selected = "flex-active-slide";
     }
     return (
-      <li data-target="slide1" className={selected}><img src={this.props.imageUrl} alt="" /></li>  
+      <li onClick={this.handleClickCarouselImage} data-target="slide1" className={selected}><img src={this.props.imageUrl} alt="" /></li>  
     );
   }
 
