@@ -3,10 +3,11 @@
   constructor() {
     super();
     this.handleClickApp = this.handleClickApp.bind(this);
+    this.state = {position : 1};
   }
  
-  handleClickApp(position) {
-    console.log(position);
+  handleClickApp(nouvellePosition) {
+    this.setState({ position: nouvellePosition });
   }
 
   
@@ -15,8 +16,8 @@
       <div>
         <Header />
         <section id="home" className="padbot0">
-          <Slider />
-          <Carousel fonctionClick={this.handleClickApp}/>
+          <Slider position={this.state.position}/>
+          <Carousel test={this.test} fonctionClick={this.handleClickApp}/>
         </section>
       </div>
     )
@@ -54,15 +55,15 @@ class Slider extends React.Component {
   render() {
     
       var selected1 = false;
-      if(this.props.index == 1) {
+      if(this.props.position == 1) {
         selected1 = true;
       }
       var selected2 = false;
-      if(this.props.index == 2) {
+      if(this.props.position == 2) {
         selected2 = true;
       }  
       var selected3 = false;
-      if(this.props.index == 3) {
+      if(this.props.position == 3) {
         selected3 = true;
       }
      
@@ -113,15 +114,35 @@ class SliderImage extends React.Component {
 class Carousel extends React.Component {
   constructor() {
     super();
+    this.state = {position : 1};
+    this.handleClickCarousel = this.handleClickCarousel.bind(this);
+  }
+  
+  handleClickCarousel(nouvellePosition) {
+    this.setState({position: nouvellePosition});
   }
   
   render() {
+    
+      var selected1 = false;
+      if(this.state.position == 1) {
+        selected1 = true;
+      }
+      var selected2 = false;
+      if(this.state.position == 2) {
+        selected2 = true;
+      }  
+      var selected3 = false;
+      if(this.state.position == 3) {
+        selected3 = true;
+      }
+      
     return(
       <div id="carousel">
         <ul className="slides">
-          <CarouselImage position="1" fonctionClick={this.props.fonctionClick} selectedImage="true" imageUrl="images/slider/slide1_bg.jpg"/>
-          <CarouselImage position="2" fonctionClick={this.props.fonctionClick} imageUrl="images/slider/slide2_bg.jpg"/>
-          <CarouselImage position="3" fonctionClick={this.props.fonctionClick} imageUrl="images/slider/slide3_bg.jpg"/>
+          <CarouselImage selectedImage={selected1}  position="1" fonctionClickCarousel={this.handleClickCarousel} fonctionClick={this.props.fonctionClick} imageUrl="images/slider/slide1_bg.jpg"/>
+          <CarouselImage selectedImage={selected2} position="2" fonctionClickCarousel={this.handleClickCarousel} fonctionClick={this.props.fonctionClick} imageUrl="images/slider/slide2_bg.jpg"/>
+          <CarouselImage selectedImage={selected3} position="3" fonctionClickCarousel={this.handleClickCarousel} fonctionClick={this.props.fonctionClick} imageUrl="images/slider/slide3_bg.jpg"/>
         </ul>
       </div>
     )
@@ -139,12 +160,13 @@ class CarouselImage extends React.Component {
   handleClickCarouselImage() {
     console.log('je suis dans CarouselImage');
     this.props.fonctionClick(this.props.position);
+    this.props.fonctionClickCarousel(this.props.position);
   }
   
   render() {
     
     var selected;
-    if(this.props.selectedImage == "true") {
+    if(this.props.selectedImage == true) {
       selected = "flex-active-slide";
     }
     return (
